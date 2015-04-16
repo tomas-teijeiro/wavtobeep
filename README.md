@@ -12,7 +12,7 @@ Converts a wav file to a sequence of *beep* PC-speaker calls through frequency a
  
 #### Lovely example included!
 
- `python wavtobeep.py monkey-island-sample.wav`
+ `~$ python wavtobeep.py monkey-island-sample.wav`
  
  <img src="http://25.media.tumblr.com/tumblr_l2x51ruzhE1qbpj1fo1_400.gif" height="200" />
  *Stan is happy with the PC Speaker version of his favourite song!*

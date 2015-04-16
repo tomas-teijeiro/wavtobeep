@@ -7,7 +7,7 @@ Converts a wav file to a sequence of *beep* PC-speaker calls through frequency a
 2. Download the script.
 3. Check the PC-speaker module is loaded:
     `~$ modprobe pcspkr`
-4. Run!:
+4. Run!
     `~$ python wavtobeep.py [-h] [-w TIME] [--verbose] [--silent] wav_file`
  
 #### Lovely example included!

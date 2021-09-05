@@ -10,7 +10,7 @@ frequency analysis.
 """
 
 import os
-from scipy.io import wavfile
+from scipy import wavfile
 import numpy as np
 import argparse
 
@@ -43,9 +43,9 @@ fs, data = wavfile.read(args.file)
 data = data[:MAX_LEN * fs]
 #Window size and overlap definition for the spectral analysis
 w = int(fs/1000.0 * CH_MS)
-overlap = w/2
+overlap = w//2
 #Number of chunks with the selected parameters
-n = len(data)/(w-overlap)
+n = len(data)//(w-overlap)
 #Duration of each beep
 dur = int(1000.0*(len(data)/float(fs))/n)
 #Array of frequencies
@@ -62,7 +62,7 @@ for i in xrange(0, len(data), w-overlap):
     chunk = chunk * blw
     chunk = chunk-np.mean(chunk)
     ft = np.fft.fft(chunk)
-    ft = ft[:w/2]
+    ft = ft[:w//2]
     #Get the most representative frequency of the chunk
     hz = freq[np.absolute(ft).argmax()]
     #We check the frequency table to get the closest

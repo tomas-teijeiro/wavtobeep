@@ -83,9 +83,10 @@ if not args.silent:
     os.system(com)
 
 #Arduino version
-com = ''
-for msec, freq in freql:
-    com += 'tone(4, {0}, {1});\ndelay({2});\n'.format(freq, msec, msec)
-if args.verbose:
-    print('Arduino equivalent order:')
-    print(com)
+if args.arduino:
+    com = ''
+    for msec, freq in freql:
+        com += 'tone(4, {0}, {1});\ndelay({2});\n'.format(freq, msec, msec)
+    if args.verbose:
+        print('Arduino equivalent order:')
+        print(com)

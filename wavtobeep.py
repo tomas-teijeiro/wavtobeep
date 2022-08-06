@@ -20,8 +20,8 @@ def frequency(note, octave):
 
 #Accepted frequencies
 FREQS = np.array([1] + [frequency(n,o)
-                                    for o in xrange(10)
-                                                        for n in xrange(1,13)])
+    for o in range(10)
+        for n in range(1,13)])
 
 #Argument parsing
 parser = argparse.ArgumentParser(
@@ -51,10 +51,10 @@ dur = int(1000.0*(len(data)/float(fs))/n)
 #Array of frequencies
 freq = np.arange(0,fs/2.0,(fs/2.0)/(w/2))
 #We truncate the data array to be a multiplo of the step
-data = data[:n*(w-overlap)]
+data = data[:int(n*(w-overlap))]
 blw = np.blackman(w)
 freql = []
-for i in xrange(0, len(data), w-overlap):
+for i in range(0, len(data), int(w-overlap)):
     chunk = data[i:i+w]
     if len(chunk) != w:
         chunk = chunk.copy()
@@ -62,7 +62,7 @@ for i in xrange(0, len(data), w-overlap):
     chunk = chunk * blw
     chunk = chunk-np.mean(chunk)
     ft = np.fft.fft(chunk)
-    ft = ft[:w/2]
+    ft = ft[:int(w/2)]
     #Get the most representative frequency of the chunk
     hz = freq[np.absolute(ft).argmax()]
     #We check the frequency table to get the closest

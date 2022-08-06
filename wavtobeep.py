@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-# pylint: disable-msg=
+#!/usr/bin/python
 """
-Created on Tue Apr  1 19:26:04 2014
 
 This small script converts a wav file to a sequence of *beep* calls, through
 frequency analysis.
@@ -25,14 +23,16 @@ FREQS = np.array([1] + [frequency(n,o)
 
 #Argument parsing
 parser = argparse.ArgumentParser(
-                 description='.wav conversion to sequence of pcspeaker beeps.')
+    description='.wav conversion to sequence of pcspeaker beeps.')
 parser.add_argument('file', help='raw .wav file to be converted.')
 parser.add_argument('-w', metavar='TIME',
-            help='Time window for frequency analysis (in ms). Default 50 ms.' )
+    help='Time window for frequency analysis (in ms). Default 50 ms.' )
 parser.add_argument('--verbose', action='store_true',
-                    help='Prints the beep command.')
+    help='Prints the beep command.')
 parser.add_argument('--silent', action='store_true',
-                    help='Does not execute the generated beep command.')
+    help='Does not execute the generated beep command.')
+parser.add_argument('--arduino', action='store_true',
+    help='Additionally print arduino equivalent order')
 args = parser.parse_args()
 
 #Maximum permitted length of the processed data (in seconds)

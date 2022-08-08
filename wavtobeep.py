@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-# pylint: disable-msg=
+#!/usr/bin/python
 """
-Created on Tue Apr  1 19:26:04 2014
 
 This small script converts a wav file to a sequence of *beep* calls, through
 frequency analysis.
@@ -20,19 +18,21 @@ def frequency(note, octave):
 
 #Accepted frequencies
 FREQS = np.array([1] + [frequency(n,o)
-                                    for o in xrange(10)
-                                                        for n in xrange(1,13)])
+    for o in range(10)
+        for n in range(1,13)])
 
 #Argument parsing
 parser = argparse.ArgumentParser(
-                 description='.wav conversion to sequence of pcspeaker beeps.')
+    description='.wav conversion to sequence of pcspeaker beeps.')
 parser.add_argument('file', help='raw .wav file to be converted.')
 parser.add_argument('-w', metavar='TIME',
-            help='Time window for frequency analysis (in ms). Default 50 ms.' )
+    help='Time window for frequency analysis (in ms). Default 50 ms.' )
 parser.add_argument('--verbose', action='store_true',
-                    help='Prints the beep command.')
+    help='Prints the beep command.')
 parser.add_argument('--silent', action='store_true',
-                    help='Does not execute the generated beep command.')
+    help='Does not execute the generated beep command.')
+parser.add_argument('--arduino', action='store_true',
+    help='Additionally print arduino equivalent order')
 args = parser.parse_args()
 
 #Maximum permitted length of the processed data (in seconds)
@@ -51,10 +51,10 @@ dur = int(1000.0*(len(data)/float(fs))/n)
 #Array of frequencies
 freq = np.arange(0,fs/2.0,(fs/2.0)/(w/2))
 #We truncate the data array to be a multiplo of the step
-data = data[:n*(w-overlap)]
+data = data[:int(n*(w-overlap))]
 blw = np.blackman(w)
 freql = []
-for i in xrange(0, len(data), w-overlap):
+for i in range(0, len(data), int(w-overlap)):
     chunk = data[i:i+w]
     if len(chunk) != w:
         chunk = chunk.copy()
@@ -62,7 +62,7 @@ for i in xrange(0, len(data), w-overlap):
     chunk = chunk * blw
     chunk = chunk-np.mean(chunk)
     ft = np.fft.fft(chunk)
-    ft = ft[:w/2]
+    ft = ft[:int(w/2)]
     #Get the most representative frequency of the chunk
     hz = freq[np.absolute(ft).argmax()]
     #We check the frequency table to get the closest
@@ -83,9 +83,10 @@ if not args.silent:
     os.system(com)
 
 #Arduino version
-com = ''
-for msec, freq in freql:
-    com += 'tone(4, {0}, {1});\ndelay({2});\n'.format(freq, msec, msec)
-if args.verbose:
-    print('Arduino equivalent order:')
-    print(com)
+if args.arduino:
+    com = ''
+    for msec, freq in freql:
+        com += 'tone(4, {0}, {1});\ndelay({2});\n'.format(freq, msec, msec)
+    if args.verbose:
+        print('Arduino equivalent order:')
+        print(com)
